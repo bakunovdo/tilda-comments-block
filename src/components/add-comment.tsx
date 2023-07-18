@@ -3,6 +3,7 @@ import { createStore } from 'solid-js/store';
 
 import { SelectStars } from './select-stars';
 import { postComment } from '../api';
+import { clxName } from '../config';
 
 let isSCrolledAfterRating = false;
 
@@ -64,17 +65,21 @@ export const AddCommentForm = () => {
   });
 
   return (
-    <div ref={sectionRef} class="pt-4 pb-6 flex flex-col items-center w-full">
+    <div
+      ref={sectionRef}
+      id={clxName('add-comment-form')}
+      class={` pt-4 pb-6 flex flex-col items-center w-full`}
+    >
       <Show when={!wasSend()}>
         <button
           onClick={toggleForm}
-          class="text-white mt-3 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5"
+          class={`text-white mt-3 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5`}
         >
           {showForm() ? 'Скрыть форму' : 'Оставить отзыв'}
         </button>
       </Show>
       <Show when={showForm() && !wasSend()}>
-        <form onSubmit={submitHandler} class="flex flex-col w-full mt-5 p-5 bg-white shadow-lg">
+        <form onSubmit={submitHandler} class={`flex flex-col w-full mt-5 p-5 bg-white shadow-lg`}>
           <SelectStars onChange={(rating) => setForm({ ...form, rating })} />
           <Show when={form.rating !== -1}>
             <div class="flex flex-col">
@@ -101,6 +106,7 @@ export const AddCommentForm = () => {
                   type="name"
                   name="name"
                   id="name"
+                  maxLength={52}
                   onChange={handleChange}
                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                   placeholder="Введите имя"
@@ -116,6 +122,7 @@ export const AddCommentForm = () => {
                   rows="5"
                   name="comment"
                   id="comment"
+                  maxLength={512}
                   onChange={handleChange}
                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                 ></textarea>

@@ -1,5 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 import { Comment } from '../types';
+import { __IS_DEV__, __IS_PROD__ } from '../config';
 
 interface Database {
   public: {
@@ -42,12 +43,17 @@ export const getPagination = (page: number, size: number) => {
 export async function getComments(page = 1) {
   const { from, to } = getPagination(Math.max(1, page), PAGE_SIZE);
 
-  const { data, status, count } = await client
+  const query = client
     .from<'comments', DComment>('comments')
     .select('*', { count: 'exact' })
-    .eq('show', 'true')
     .order('created_at', { ascending: false })
     .range(from, to);
+
+  if (__IS_PROD__) {
+    query.eq('show', 'true');
+  }
+
+  const { data, status, count } = await query;
 
   if (status === 0) {
     return Promise.reject(RequestError.DATABASE_SLEEP);
@@ -75,6 +81,10 @@ export async function postComment(comment: Omit<Comment, 'id'>) {
 const validateComment = (comment: any) => {
   if (typeof comment !== 'object') {
     throw Error('Is not Object');
+  }
+
+  if (comment.show) {
+    throw new Error("show should't exist");
   }
 
   const keys = ['created_at', 'rating', 'email', 'name', 'comment'];

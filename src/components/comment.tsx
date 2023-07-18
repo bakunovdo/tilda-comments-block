@@ -7,6 +7,8 @@ import { star as starFilled } from 'solid-heroicons/solid';
 import { Array5Len, ICON_SIZE } from './const';
 
 import { Comment } from '../types';
+import { clxName } from '../config';
+import { TextExtended } from '../shared/ui/text-extended';
 
 const months: Record<string, string> = {
   1: 'января',
@@ -30,17 +32,24 @@ function formatDate(str: string): string {
   return `${d} ${months[Number(m)]}, ${y} г.`;
 }
 
+const createClass = (part = '') => clxName(part ? 'comment-card--' + part : 'comment-card');
+
 export const CommentCard: Component<Comment> = (comment) => {
   return (
     <article
-      class="comment px-4 py-4 bg-white rounded-md flex flex-col border"
+      id={createClass()}
+      class={`px-4 py-4 bg-white rounded-md flex flex-col border`}
       data-id={comment.id}
     >
-      <div class="comment_header flex justify-between">
-        <h4 class="comment_header__name mr-4 font-bold line-clamp-1" title={comment.name}>
+      <div class="flex justify-between">
+        <h4
+          id={createClass('name')}
+          class={`mr-4 font-bold text-xl line-clamp-1`}
+          title={comment.name}
+        >
           {comment.name}
         </h4>
-        <div class="comment_stars flex">
+        <div id={createClass('stars')} class={`flex`}>
           <For each={Array5Len}>
             {(_, id) => {
               if (id() + 1 <= comment.rating) {
@@ -51,13 +60,13 @@ export const CommentCard: Component<Comment> = (comment) => {
           </For>
         </div>
       </div>
-      <p class="comment_text my-2 line-clamp-3">{comment.comment}</p>
-      <div class="comment_date flex items-end justify-end text-gray-500">
+      <TextExtended id={createClass('comment')} class={`font-semibold`} content={comment.comment} />
+      <div id={createClass('created_at')} class={`flex items-end justify-end text-gray-500`}>
         {formatDate(comment.created_at)}
       </div>
       {import.meta.env.DEV && (
         <div
-          class="text-white w-fit px-2"
+          class="text-white w-fit px-2 mt-2"
           classList={{
             'bg-green-700': comment.show === true,
             'bg-red-700': comment.show === false,

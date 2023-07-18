@@ -6,6 +6,7 @@ import { Comment } from '../types';
 import { PAGE_SIZE } from '../api';
 import { LEFT_DOT, RIGHT_DOT, createPagination } from '../shared/create-pagination';
 import { LoaderSpin } from '../shared/ui/loader-spin';
+import { clxName } from '../config';
 
 interface Props {
   comments: Comment[];
@@ -38,7 +39,7 @@ export const CommentsList: Component<Props> = (props) => {
           </Match>
 
           <Match when={!props.isLoading}>
-            <div class="w-full bg-white rounded-md">
+            <div id={clxName('comment-container')} class={`w-full bg-white rounded-md`}>
               <For each={props.comments}>
                 {(comment, id) => {
                   const isNotLast = id() < len - 1;
@@ -55,7 +56,7 @@ export const CommentsList: Component<Props> = (props) => {
           </Match>
         </Switch>
 
-        <div class="flex mt-4 gap-1">
+        <div id={clxName('pagination_container')} class={`flex mt-4 gap-1`}>
           {getPagination() &&
             getPagination()?.map((page) => {
               const currentPage = props.page();
@@ -92,15 +93,17 @@ function PaginationButton({
   page: number | string;
 }) {
   return (
-    <div
-      class="px-3 py-1 select-none transition-colors rounded"
+    <button
+      data-iscurrent={Boolean(isCurrentPage)}
+      id={clxName('pagination-button')}
+      class={`px-3 py-1 select-none transition-colors rounded`}
       classList={{
-        'bg-blue-700 text-white cursor-default comments__active-page': isCurrentPage,
-        'cursor-pointer  hover:bg-slate-100 comments__non-active-page': !isCurrentPage,
+        'bg-blue-700 text-white cursor-default': isCurrentPage,
+        'cursor-pointer  hover:bg-slate-100': !isCurrentPage,
       }}
       onClick={onClick}
     >
       {page}
-    </div>
+    </button>
   );
 }

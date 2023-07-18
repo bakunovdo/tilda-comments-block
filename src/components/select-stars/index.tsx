@@ -2,6 +2,7 @@ import { Component, createEffect, createSignal } from 'solid-js';
 
 import { Rate0, Rate1, Rate2, Rate3, Rate4, Rate5 } from './emoji-rates';
 import styles from './index.module.scss';
+import { clxName } from '../../config';
 
 type Props = {
   onChange?: (rating: number) => void;
@@ -30,7 +31,7 @@ export const SelectStars: Component<Props> = (props) => {
           <label for={styles.rating2}></label>
           <input type="radio" name="rating" id={styles.rating1} onClick={() => setSelected(1)} />
           <label for={styles.rating1}></label>
-          <div class={styles.emoji_wrapper}>
+          <div class={`${styles.emoji_wrapper} ${clxName('emoji-wrapper')}`}>
             <div class={styles.emoji}>
               <Rate0 />
               <Rate1 />
