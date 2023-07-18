@@ -15,6 +15,14 @@
         max-width: 54rem;
       }
 
+      #__commentsplugin__add-comment-form {
+        max-width: 34rem;
+      }
+
+      #__commentsplugin__add-comment-form label {
+        color: white;
+      }
+
       #__commentsplugin__entry-point,
       #__commentsplugin__comment-card--created_at {
         color: white;
@@ -22,14 +30,9 @@
 
       #__commentsplugin__comment-container,
       #__commentsplugin__comment-card,
-      #__commentsplugin__add-comment-form {
+      #__commentsplugin__add-comment-form form {
         background: transparent;
         background-color: transparent;
-      }
-
-      #__commentsplugin__emoji_wrapper:after,
-      #__commentsplugin__emoji_wrapper:after {
-        display: none;
       }
 
       #__commentsplugin__pagination-button[data-iscurrent='false'] {
@@ -41,10 +44,12 @@
       }
     </style>
     <script type="module" crossorigin src="/index.js"></script>
-    <link rel="stylesheet" href="/index.css" />
+    <link rel="stylesheet" href="/index.css">
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="comments-block"></div>
+
+    
   </body>
 </html>
